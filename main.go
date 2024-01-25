@@ -21,6 +21,7 @@ func main() {
 
 	// Инициализация соединения с базой данных
 	db, err := database.NewConnection()
+	repo := database.InitRepository()
 	if err != nil {
 		log.Fatal("Error connecting to the database")
 	}
@@ -30,7 +31,7 @@ func main() {
 	router := mux.NewRouter()
 
 	// Инициализация API обработчиков
-	api.InitHandlers(router, db)
+	api.InitHandlers(router, repo)
 
 	// Запуск сервера
 	port := os.Getenv("PORT")

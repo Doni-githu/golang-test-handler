@@ -5,17 +5,17 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/Doni-githu/golang-test-handler/database"
 	"github.com/Doni-githu/golang-test-handler/models"
+	"github.com/gorilla/mux"
 )
 
 type Handlers struct {
-	db *database.DB
+	r *database.Respository
 }
 
-func InitHandlers(router *mux.Router, db *database.DB) {
-	handlers := &Handlers{db}
+func InitHandlers(router *mux.Router, repo *database.Respository) {
+	handlers := &Handlers{r: repo}
 
 	// Установка маршрутов
 	router.HandleFunc("/people", handlers.GetPeople).Methods("GET")
@@ -31,15 +31,15 @@ func (h *Handlers) GetPeople(w http.ResponseWriter, r *http.Request) {
 	// ...
 
 	// Пример:
-	// people, err := h.db.GetPeople()
-	// if err != nil {
-	// 	log.Println("Error getting people:", err)
-	// 	http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-	// 	return
-	// }
+	people, err := h.r.GetPeople()
+	if err != nil {
+		log.Println("Error getting people:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 
-	// w.Header().Set("Content-Type", "application/json")
-	// json.NewEncoder(w).Encode(people)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(people)
 }
 
 func (h *Handlers) GetPerson(w http.ResponseWriter, r *http.Request) {

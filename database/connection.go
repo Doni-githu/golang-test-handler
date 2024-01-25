@@ -41,3 +41,8 @@ func NewConnection() (*DB, error) {
 	return &DB{db}, nil
 }
 
+
+func InitRepository() *Respository {
+	return &Respository{}
+}
+
